@@ -16,20 +16,29 @@
             text-align: center;
         }
         .number {
-            font-size: 24px;
-            margin: 0 5px;
+            font-size: 32px; /* Increase font size for numbers */
+            margin: 0 10px; /* Adjust spacing */
+        }
+        input[type="text"], button {
+            font-size: 28px; /* Increase font size for inputs and buttons */
+            padding: 10px; /* Increase padding for better touch interaction */
+            margin: 5px 0; /* Adjust spacing */
+        }
+        #result, #score, #timer {
+            font-size: 28px; /* Increase font size for text elements */
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
     <div class="game-container">
         <div id="numberDisplay"></div>
-        <input type="text" id="userInput" placeholder="输入数字" style="font-size: 24px;" disabled />
-        <input type="text" id="colorInput" placeholder="输入颜色，如红黄蓝" style="font-size: 24px;" disabled />
-        <button onclick="checkNumber()">提交</button>
-        <div id="result" style="margin-top: 20px; font-size: 24px;"></div>
-        <div id="score" style="margin-top: 20px; font-size: 24px;">得分: 0</div>
-        <div id="timer" style="margin-top: 20px; font-size: 24px;">剩余时间: 6</div>
+        <input type="text" id="userInput" placeholder="输入数字" style="margin-top: 10px;" disabled />
+        <input type="text" id="colorInput" placeholder="输入颜色，如红蓝绿黑" style="margin-top: 10px;" disabled />
+        <button onclick="checkNumber()" style="margin-top: 10px;">提交</button>
+        <div id="result"></div>
+        <div id="score">得分: 0</div>
+        <div id="timer">剩余时间: 6</div>
     </div>
     <script>
         let currentNumber = '';
@@ -41,7 +50,7 @@
             document.getElementById('numberDisplay').innerHTML = ''; // Clear previous numbers
             let number = '';
             let colors = '';
-            const colorOptions = { '红': 'red', '蓝': 'blue', '绿': 'green' };
+            const colorOptions = { '红': 'red', '蓝': 'blue', '绿': 'green', '黑': 'black' };
             for (let i = 0; i < 5; i++) {
                 const digit = Math.floor(Math.random() * 10);
                 number += digit;
