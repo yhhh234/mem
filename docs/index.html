@@ -24,7 +24,7 @@
         <button onclick="checkNumber()">提交</button>
         <div id="result" style="margin-top: 20px; font-size: 24px;"></div>
         <div id="score" style="margin-top: 20px; font-size: 24px;">得分: 0</div>
-        <div id="timer" style="margin-top: 20px; font-size: 24px;">剩余时间: 5</div>
+        <div id="timer" style="margin-top: 20px; font-size: 24px;">剩余时间: 4</div>
     </div>
     <script>
         let currentNumber = '';
@@ -32,21 +32,25 @@
         let countdown;
 
         function generateNumber() {
-            currentNumber = Math.floor(Math.random() * 9000000) + 1000000;
+            let number = '';
+            for (let i = 0; i < 8; i++) {  // 生成8个数字
+                number += Math.floor(Math.random() * 10); // 生成0-9之间的单个数字
+            }
+            currentNumber = number;
             document.getElementById('numberDisplay').innerText = currentNumber;
             document.getElementById('userInput').disabled = true; // 禁用输入框
             startTimer();
         }
 
         function startTimer() {
-            let timeLeft = 5;  // 倒计时五秒
+            let timeLeft = 4;  // 设置时间为4秒
             document.getElementById('timer').innerText = '剩余时间: ' + timeLeft;
             countdown = setInterval(function() {
                 timeLeft--;
                 document.getElementById('timer').innerText = '剩余时间: ' + timeLeft;
                 if (timeLeft <= 0) {
                     clearInterval(countdown);
-                    document.getElementById('numberDisplay').innerText = ''; // 确保数字不再显示
+                    document.getElementById('numberDisplay').innerText = ''; // 清除显示的数字
                     document.getElementById('userInput').disabled = false; // 启用输入框
                     document.getElementById('userInput').focus(); // 自动聚焦到输入框
                 }
