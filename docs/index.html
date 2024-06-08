@@ -15,67 +15,89 @@
         .game-container {
             text-align: center;
         }
+        .number {
+            font-size: 24px;
+            margin: 0 5px;
+        }
     </style>
 </head>
 <body>
     <div class="game-container">
-        <div id="numberDisplay" style="font-size: 24px; margin-bottom: 20px;"></div>
-        <input type="text" id="userInput" style="font-size: 24px;" disabled />
+        <div id="numberDisplay"></div>
+        <input type="text" id="userInput" placeholder="输入数字" style="font-size: 24px;" disabled />
+        <input type="text" id="colorInput" placeholder="输入颜色，如红黄蓝" style="font-size: 24px;" disabled />
         <button onclick="checkNumber()">提交</button>
         <div id="result" style="margin-top: 20px; font-size: 24px;"></div>
         <div id="score" style="margin-top: 20px; font-size: 24px;">得分: 0</div>
-        <div id="timer" style="margin-top: 20px; font-size: 24px;">剩余时间: 4</div>
+        <div id="timer" style="margin-top: 20px; font-size: 24px;">剩余时间: 6</div>
     </div>
     <script>
         let currentNumber = '';
+        let currentColors = '';
         let score = 0;
         let countdown;
 
         function generateNumber() {
+            document.getElementById('numberDisplay').innerHTML = ''; // Clear previous numbers
             let number = '';
-            for (let i = 0; i < 8; i++) {  // 生成8个数字
-                number += Math.floor(Math.random() * 10); // 生成0-9之间的单个数字
+            let colors = '';
+            const colorOptions = { '红': 'red', '黄': 'yellow', '蓝': 'blue', '绿': 'green' };
+            for (let i = 0; i < 5; i++) {
+                const digit = Math.floor(Math.random() * 10);
+                number += digit;
+                const colorKey = Object.keys(colorOptions)[Math.floor(Math.random() * Object.keys(colorOptions).length)];
+                const color = colorOptions[colorKey];
+                colors += colorKey; // Append the Chinese color name
+                const span = document.createElement('span');
+                span.textContent = digit;
+                span.style.color = color; // Apply color style
+                span.className = 'number';
+                document.getElementById('numberDisplay').appendChild(span);
             }
             currentNumber = number;
-            document.getElementById('numberDisplay').innerText = currentNumber;
-            document.getElementById('userInput').disabled = true; // 禁用输入框
+            currentColors = colors;
+            document.getElementById('userInput').disabled = true;
+            document.getElementById('colorInput').disabled = true;
             startTimer();
         }
 
         function startTimer() {
-            let timeLeft = 4;  // 设置时间为4秒
+            let timeLeft = 6;  // 设置时间为6秒
             document.getElementById('timer').innerText = '剩余时间: ' + timeLeft;
             countdown = setInterval(function() {
                 timeLeft--;
                 document.getElementById('timer').innerText = '剩余时间: ' + timeLeft;
                 if (timeLeft <= 0) {
                     clearInterval(countdown);
-                    document.getElementById('numberDisplay').innerText = ''; // 清除显示的数字
-                    document.getElementById('userInput').disabled = false; // 启用输入框
-                    document.getElementById('userInput').focus(); // 自动聚焦到输入框
+                    document.getElementById('numberDisplay').innerHTML = ''; // Clear the numbers
+                    document.getElementById('userInput').disabled = false;
+                    document.getElementById('colorInput').disabled = false;
+                    document.getElementById('userInput').focus();
                 }
             }, 1000);
         }
 
         function checkNumber() {
-            clearInterval(countdown);  // 停止计时器
+            clearInterval(countdown);  // Stop the timer
             const userNumber = document.getElementById('userInput').value;
-            document.getElementById('userInput').disabled = true; // 禁用输入框直到下一个数字生成
-            if (userNumber == currentNumber) {
+            const userColors = document.getElementById('colorInput').value;
+            document.getElementById('userInput').disabled = true;
+            document.getElementById('colorInput').disabled = true;
+            if (userNumber === currentNumber && userColors === currentColors) {
                 score++;
                 document.getElementById('result').innerText = '正确！';
                 document.getElementById('score').innerText = '得分: ' + score;
             } else {
-                document.getElementById('result').innerText = '错误，正确答案是 ' + currentNumber;
-                score = 0;  // 如果错误，得分重置
+                document.getElementById('result').innerText = '错误，正确答案是数字 ' + currentNumber + ' 和颜色 ' + currentColors;
+                score = 0;  // Reset score on incorrect answer
                 document.getElementById('score').innerText = '得分: ' + score;
             }
-            generateNumber();
             document.getElementById('userInput').value = '';
+            document.getElementById('colorInput').value = '';
+            generateNumber();
         }
 
-        // 当页面加载完毕时，生成第一个数字
-        window.onload = generateNumber;
+        window.onload = generateNumber;  // Start the game when the page loads
     </script>
 </body>
 </html>
