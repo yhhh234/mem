@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>记忆游戏</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .game-container {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div id="numberDisplay" style="font-size: 24px; margin-bottom: 20px;"></div>
+        <input type="text" id="userInput" style="font-size: 24px;" disabled />
+        <button onclick="checkNumber()">提交</button>
+        <div id="result" style="margin-top: 20px; font-size: 24px;"></div>
+        <div id="score" style="margin-top: 20px; font-size: 24px;">得分: 0</div>
+        <div id="timer" style="margin-top: 20px; font-size: 24px;">剩余时间: 5</div>
+    </div>
+    <script>
+        let currentNumber = '';
+        let score = 0;
+        let countdown;
+
+        function generateNumber() {
+            currentNumber = Math.floor(Math.random() * 9000000) + 1000000;
+            document.getElementById('numberDisplay').innerText = currentNumber;
+            document.getElementById('userInput').disabled = true; // 禁用输入框
+            startTimer();
+        }
+
+        function startTimer() {
+            let timeLeft = 5;  // 倒计时五秒
+            document.getElementById('timer').innerText = '剩余时间: ' + timeLeft;
+            countdown = setInterval(function() {
+                timeLeft--;
+                document.getElementById('timer').innerText = '剩余时间: ' + timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    document.getElementById('numberDisplay').innerText = ''; // 确保数字不再显示
+                    document.getElementById('userInput').disabled = false; // 启用输入框
+                    document.getElementById('userInput').focus(); // 自动聚焦到输入框
+                }
+            }, 1000);
+        }
+
+        function checkNumber() {
+            clearInterval(countdown);  // 停止计时器
+            const userNumber = document.getElementById('userInput').value;
+            document.getElementById('userInput').disabled = true; // 禁用输入框直到下一个数字生成
+            if (userNumber == currentNumber) {
+                score++;
+                document.getElementById('result').innerText = '正确！';
+                document.getElementById('score').innerText = '得分: ' + score;
+            } else {
+                document.getElementById('result').innerText = '错误，正确答案是 ' + currentNumber;
+                score = 0;  // 如果错误，得分重置
+                document.getElementById('score').innerText = '得分: ' + score;
+            }
+            generateNumber();
+            document.getElementById('userInput').value = '';
+        }
+
+        // 当页面加载完毕时，生成第一个数字
+        window.onload = generateNumber;
+    </script>
+</body>
+</html>
