@@ -56,7 +56,7 @@
             let number = '';
             let colors = '';
             const colorOptions = { '红': 'red', '蓝': 'blue', '绿': 'green', '黑': 'black' };
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 8; i++) {
                 const digit = Math.floor(Math.random() * 10);
                 number += digit;
                 const colorKey = Object.keys(colorOptions)[Math.floor(Math.random() * Object.keys(colorOptions).length)];
@@ -76,7 +76,7 @@
         }
 
         function startTimer() {
-            let timeLeft = 6;  // 设置时间为6秒
+            let timeLeft = 5;  // 设置时间为6秒
             document.getElementById('timer').innerText = '剩余时间: ' + timeLeft;
             countdown = setInterval(function() {
                 timeLeft--;
