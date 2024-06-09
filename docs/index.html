@@ -16,47 +16,47 @@
             text-align: center;
         }
         .number {
-            font-size: 80px; /* Increase font size for numbers */
-            font-weight: bold; /* Make numbers bold */
-            margin: 0 10px; /* Adjust spacing */
+            font-size: 48px; /* Large font size for better visibility */
+            font-weight: bold; /* Bold for better readability */
+            margin: 0 10px; /* Spacing between numbers */
         }
         input[type="text"], button {
-            font-size: 50px; /* Increase font size for inputs and buttons */
-            font-weight: bold; /* Make inputs and buttons bold */
-            padding: 15px; /* Increase padding for better touch interaction */
-            width: 90%; /* Adjust input width for better layout */
-            display: block; /* Make inputs and buttons block level for new line */
-            margin: 10px auto; /* Center align and provide spacing */
+            font-size: 36px; /* Large font size for inputs and buttons */
+            padding: 15px; /* Padding for better interaction */
+            width: 90%; /* Width adjustment for inputs */
+            display: block; /* Block display for layout */
+            margin: 10px auto; /* Centering and spacing */
         }
-        #result, #score, #timer {
-            font-size: 50px; /* Increase font size for text elements */
-            font-weight: bold; /* Make text elements bold */
+        #result, #score, #timer, #level {
+            font-size: 36px; /* Text elements in large font size */
             margin-top: 20px;
         }
     </style>
-
+</head>
 <body>
     <div class="game-container">
         <div id="numberDisplay"></div>
-        <input type="text" id="userInput" placeholder="输入数字" style="margin-top: 10px;" disabled />
-        <input type="text" id="colorInput" placeholder="输入颜色，如红蓝绿黑" style="margin-top: 10px;" disabled />
-        <button onclick="checkNumber()" style="margin-top: 10px;">提交</button>
+        <input type="text" id="userInput" placeholder="输入数字" disabled />
+        <input type="text" id="colorInput" placeholder="输入颜色，如红蓝绿黑" disabled />
+        <button onclick="checkNumber()">提交</button>
         <div id="result"></div>
         <div id="score">得分: 0</div>
-        <div id="timer">剩余时间: 6</div>
+        <div id="timer">剩余时间: 5</div>
+        <div id="level">当前关卡: 1</div>
     </div>
     <script>
         let currentNumber = '';
         let currentColors = '';
         let score = 0;
         let countdown;
+        let level = 1; // Current level starts at 1
 
         function generateNumber() {
-            document.getElementById('numberDisplay').innerHTML = ''; // Clear previous numbers
+            document.getElementById('numberDisplay').innerHTML = '';
             let number = '';
             let colors = '';
             const colorOptions = { '红': 'red', '蓝': 'blue', '绿': 'green', '黑': 'black' };
-            for (let i = 0; i < 8; i++) {
+            for (let i = 0; i < level + 4; i++) {  // Number of digits based on level
                 const digit = Math.floor(Math.random() * 10);
                 number += digit;
                 const colorKey = Object.keys(colorOptions)[Math.floor(Math.random() * Object.keys(colorOptions).length)];
@@ -72,18 +72,17 @@
             currentColors = colors;
             document.getElementById('userInput').disabled = true;
             document.getElementById('colorInput').disabled = true;
-            startTimer();
+            startTimer(level + 4); // Time based on level
         }
 
-        function startTimer() {
-            let timeLeft = 5;  // 设置时间为6秒
-            document.getElementById('timer').innerText = '剩余时间: ' + timeLeft;
+        function startTimer(seconds) {
+            document.getElementById('timer').innerText = '剩余时间: ' + seconds;
             countdown = setInterval(function() {
-                timeLeft--;
-                document.getElementById('timer').innerText = '剩余时间: ' + timeLeft;
-                if (timeLeft <= 0) {
+                seconds--;
+                document.getElementById('timer').innerText = '剩余时间: ' + seconds;
+                if (seconds <= 0) {
                     clearInterval(countdown);
-                    document.getElementById('numberDisplay').innerHTML = ''; // Clear the numbers
+                    document.getElementById('numberDisplay').innerHTML = '';
                     document.getElementById('userInput').disabled = false;
                     document.getElementById('colorInput').disabled = false;
                     document.getElementById('userInput').focus();
@@ -92,26 +91,30 @@
         }
 
         function checkNumber() {
-            clearInterval(countdown);  // Stop the timer
+            clearInterval(countdown);
             const userNumber = document.getElementById('userInput').value;
             const userColors = document.getElementById('colorInput').value;
             document.getElementById('userInput').disabled = true;
             document.getElementById('colorInput').disabled = true;
             if (userNumber === currentNumber && userColors === currentColors) {
                 score++;
-                document.getElementById('result').innerText = '正确！';
+                level++;
+                document.getElementById('result').innerText = '正确！进入下一关';
                 document.getElementById('score').innerText = '得分: ' + score;
+                document.getElementById('level').innerText = '当前关卡: ' + level;
             } else {
                 document.getElementById('result').innerText = '错误，正确答案是数字 ' + currentNumber + ' 和颜色 ' + currentColors;
-                score = 0;  // Reset score on incorrect answer
+                score = 0;
                 document.getElementById('score').innerText = '得分: ' + score;
+                level = 1; // Reset to level 1 on wrong answer
+                document.getElementById('level').innerText = '当前关卡: ' + level;
             }
             document.getElementById('userInput').value = '';
             document.getElementById('colorInput').value = '';
             generateNumber();
         }
 
-        window.onload = generateNumber;  // Start the game when the page loads
+        window.onload = generateNumber;
     </script>
 </body>
 </html>
