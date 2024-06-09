@@ -16,20 +16,25 @@
             text-align: center;
         }
         .number {
-            font-size: 32px; /* Increase font size for numbers */
+            font-size: 80px; /* Increase font size for numbers */
+            font-weight: bold; /* Make numbers bold */
             margin: 0 10px; /* Adjust spacing */
         }
         input[type="text"], button {
-            font-size: 28px; /* Increase font size for inputs and buttons */
-            padding: 10px; /* Increase padding for better touch interaction */
-            margin: 5px 0; /* Adjust spacing */
+            font-size: 50px; /* Increase font size for inputs and buttons */
+            font-weight: bold; /* Make inputs and buttons bold */
+            padding: 15px; /* Increase padding for better touch interaction */
+            width: 90%; /* Adjust input width for better layout */
+            display: block; /* Make inputs and buttons block level for new line */
+            margin: 10px auto; /* Center align and provide spacing */
         }
         #result, #score, #timer {
-            font-size: 28px; /* Increase font size for text elements */
+            font-size: 50px; /* Increase font size for text elements */
+            font-weight: bold; /* Make text elements bold */
             margin-top: 20px;
         }
     </style>
-</head>
+
 <body>
     <div class="game-container">
         <div id="numberDisplay"></div>
